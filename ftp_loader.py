@@ -18,23 +18,24 @@ if change_extension:
 
 # Connect to the FTP server and upload the file
 if st.button("Upload"):
-    try:
-        # Rename the uploaded file with the user's specified extension
-        file_name, old_extension = os.path.splitext(local_file.name)
-        if change_extension:
-            new_file_name = file_name + new_extension
-        else:
-            new_file_name = local_file.name
+    with st.spinner("Uploading file..."):
+        try:
+            # Rename the uploaded file with the user's specified extension
+            file_name, old_extension = os.path.splitext(local_file.name)
+            if change_extension:
+                new_file_name = file_name + new_extension
+            else:
+                new_file_name = local_file.name
 
-        ftp = ftplib.FTP(ftp_server)
-        ftp.login(user=username, passwd=password)
-        ftp.storbinary(f"STOR {new_file_name}", local_file)
-        st.success("File uploaded successfully!")
+            ftp = ftplib.FTP(ftp_server)
+            ftp.login(user=username, passwd=password)
+            ftp.storbinary(f"STOR {new_file_name}", local_file)
+            st.success("File uploaded successfully!")
 
-        # List the files in the FTP server's current directory
-        files = ftp.nlst()
-        st.write("Files in the FTP server's current directory:")
-        for file in files:
-            st.write(file)
-    except Exception as e:
-        st.error(f"Error: {str(e)}")
+            # List the files in the FTP server's current directory
+            files = ftp.nlst()
+            st.write("Files in the FTP server's current directory:")
+            for file in files:
+                st.write(file)
+        except Exception as e:
+            st.error(f"Error: {str(e)}")
