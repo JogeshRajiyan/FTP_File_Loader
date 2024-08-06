@@ -10,6 +10,9 @@ password = st.text_input("Password", type="password")
 local_file = st.file_uploader("Select a file to upload")
 change_extension = st.checkbox("Change file extension")
 
+if local_file is None:
+    st.error("Please select a file to upload.")
+
 if change_extension:
     new_extension = st.text_input("Enter the new file extension needed")
 
