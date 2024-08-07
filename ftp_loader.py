@@ -83,16 +83,17 @@ def upload_page():
     if st.button("Upload",key="upload-button"):
         with st.spinner("Uploading file..."):
             try:
-                # Rename the uploaded file with the user's specified extension
-                file_name, old_extension = os.path.splitext(local_file.name)
-                if change_extension:
-                    new_file_name = file_name + new_extension
-                else:
-                    new_file_name = local_file.name
-
-                ftp = session_state.ftp
-                ftp.storbinary(f"STOR {new_file_name}", local_file)
-                st.success("File uploaded successfully!")
+                for local_file in local_files:
+                    # Rename the uploaded file with the user's specified extension
+                    file_name, old_extension = os.path.splitext(local_file.name)
+                    if change_extension:
+                        new_file_name = file_name + new_extension
+                    else:
+                        new_file_name = local_file.name
+    
+                    ftp = session_state.ftp
+                    ftp.storbinary(f"STOR {new_file_name}", local_file)
+                    st.success(f"File {new_file_name} uploaded successfully!")
                 st.rerun()
             except Exception as e:
                 st.error(f"Error: {str(e)}")
