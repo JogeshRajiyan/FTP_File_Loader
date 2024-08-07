@@ -71,7 +71,7 @@ def upload_page():
             st.rerun()
 
     st.header("Upload File")
-    local_file = st.file_uploader("Select a file to upload")
+    local_file = st.file_uploader("Select a file to upload",accept_multiple_files=True)
     change_extension = st.checkbox("Change file extension")
 
     if local_file is None:
