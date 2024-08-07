@@ -93,6 +93,7 @@ def upload_page():
                 ftp = session_state.ftp
                 ftp.storbinary(f"STOR {new_file_name}", local_file)
                 st.success("File uploaded successfully!")
+                st.rerun()
             except Exception as e:
                 st.error(f"Error: {str(e)}")
 
@@ -106,12 +107,13 @@ def upload_page():
     remove_file = st.checkbox("Remove file from server")
     if remove_file:
         file_to_remove = st.selectbox("Select a file to remove", files)
-        if st.button("Remove"):
+        if st.button("Remove",disabled=len(files)==0):
             with st.spinner("Removing file..."):
                 try:
                     ftp = session_state.ftp
                     ftp.delete(file_to_remove)
                     st.success("File removed successfully!")
+                    st.rerun()
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
 
